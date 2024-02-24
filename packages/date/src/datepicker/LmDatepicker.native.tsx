@@ -45,6 +45,9 @@ export function LmDatepicker({
       label={label}
       labelInline={labelInline}
       helperText={helperText}
+      onTouchStart={() => {
+        startOpenChange((state) => !state)
+      }}
       {...containerProps}
     >
       <XStack space width={Platform.OS === 'web' ? 'fit-content' : undefined}>
@@ -52,6 +55,7 @@ export function LmDatepicker({
           <XGroup.Item>
             <Input
               width={'$12'}
+              editable={false}
               value={state.startDate ? getLocaleDate({ date: state.startDate }) : ''}
             ></Input>
           </XGroup.Item>
@@ -64,6 +68,7 @@ export function LmDatepicker({
             <XGroup.Item>
               <Input
                 width={'$12'}
+                editable={false}
                 value={state.endDate ? getLocaleDate({ date: state.endDate }) : ''}
               />
             </XGroup.Item>
@@ -84,6 +89,13 @@ export function LmDatepicker({
               startDate: date ?? null,
             }))
             startOpenChange(false)
+            if (typeof onChange === "function") {
+              const newState = {
+                ...state,
+                startDate: date
+              }
+              onChange(newState)
+            }
           }}
           onCancel={() => startOpenChange(false)}
         />
@@ -99,6 +111,13 @@ export function LmDatepicker({
               endDate: date ?? null,
             }))
             startOpenChange(false)
+            if (typeof onChange === "function") {
+              const newState = {
+                ...state,
+                startDate: date
+              }
+              onChange(newState)
+            }
           }}
           onCancel={() => endOpenChange(false)}
         />
